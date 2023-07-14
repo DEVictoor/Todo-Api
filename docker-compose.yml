@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: "todo-db-pgsql"
+    image: postgres
+    environment:
+      POSTGRES_USER: ${PSQL_USER:-postgres}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD:-password}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-todo:/data/postgres
+    ports:
+      - "${PSQL_PORT:-5432}:5432"
+    networks:
+     - postgres-todo
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: "pgadmin_todo_net"
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-pgpassword}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin-todo:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks: 
+      - postgres-todo
+    restart: unless-stopped
+
+networks:
+  postgres-todo:
+volumes:
+  postgres-todo:
+  pgadmin-todo:
