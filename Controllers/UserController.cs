@@ -1,4 +1,8 @@
+using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using todoapi.models;
 
 namespace todoapi.Controllers;
 
@@ -6,20 +10,46 @@ namespace todoapi.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    IUserService userService;
+  IUserService userService;
+  IJwtController _jwt;
 
-    // private readonly I
+  public UserController(
+      IUserService service,
+      IJwtController jwt
+  )
+  {
+    userService = service;
+    _jwt = jwt;
+  }
 
-    public UserController(
-        IUserService service
-    )
+  [HttpGet]
+  [Authorize]
+  public IActionResult Get()
+  {
+    var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+    var rToken = _jwt.validarToken(identity);
+
+    if (!rToken.success) return Ok(rToken);
+
+    return Ok(userService.Get());
+  }
+
+  [HttpPost]
+  public IActionResult Save([FromBody] User user)
+  {
+    var foundUser = userService.FindOneByUsername(user.username);
+
+    if (foundUser != null)
     {
-        userService = service;
+      Console.WriteLine("Usuario encontrado, no se puede encontrar otro");
+      return new CustomResponse(HttpStatusCode.Conflict, "Username ya registrado");
     }
-
-    [HttpGet]
-    public IActionResult Get()
+    else
     {
-        return Ok(userService.Get());
+      Console.WriteLine("Usuario no encontrado, se creara otro");
+      userService.Save(user);
+      return new CustomResponse(HttpStatusCode.Accepted, "Usuario guardado");
     }
+  }
 }
