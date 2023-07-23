@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 using todoapi;
+using todoapi.Middlewares;
 using todoapi.Helpers;
 using todoapi.Controllers;
 using todoapi.models;
@@ -71,6 +72,9 @@ var app = builder.Build();
 
 // Migration
 DatabaseManagementService.MigrationInitialisation(app);
+
+// prefix
+app.UseMiddleware<PrefixMiddleware>("/api");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
