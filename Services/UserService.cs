@@ -44,12 +44,14 @@ public class UserService : IUserService
     return foundUser;
   }
 
-  public async Task Save(User user)
+  public async Task Save(RegisterModel mRegister)
   {
+    User createuser = new User();
     string salt = hashingPassword.GenerateSalt();
-    user.passwordsalt = salt;
-    user.password = hashingPassword.GenerateHash(user.password, salt, 10);
-    context.Add(user);
+    createuser.username = mRegister.username;
+    createuser.passwordsalt = salt;
+    createuser.password = hashingPassword.GenerateHash(mRegister.password, salt, 10);
+    context.Add(createuser);
     await context.SaveChangesAsync();
   }
 
@@ -76,7 +78,7 @@ public class UserService : IUserService
 public interface IUserService
 {
   IEnumerable<User> Get();
-  Task Save(User user);
+  Task Save(RegisterModel u);
   User? FindOneByUsername(string username);
   Task Update(Guid id, User user);
   Task Delete(Guid id);

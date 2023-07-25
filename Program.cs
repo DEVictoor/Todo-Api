@@ -74,7 +74,8 @@ var app = builder.Build();
 DatabaseManagementService.MigrationInitialisation(app);
 
 // prefix
-app.UseMiddleware<PrefixMiddleware>("/api");
+// app.UseMiddleware<PrefixMiddleware>("/api");
+app.UsePathBase(new PathString("/api"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

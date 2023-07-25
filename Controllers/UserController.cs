@@ -35,21 +35,21 @@ public class UserController : ControllerBase
     return Ok(userService.Get());
   }
 
-  [HttpPost]
-  public IActionResult Save([FromBody] User user)
-  {
-    var foundUser = userService.FindOneByUsername(user.username);
+  // [HttpPost]
+  // public IActionResult Save([FromBody] User user)
+  // {
+  //   var foundUser = userService.FindOneByUsername(user.username);
 
-    if (foundUser != null)
-    {
-      Console.WriteLine("Usuario encontrado, no se puede encontrar otro");
-      return new CustomResponse(HttpStatusCode.Conflict, "Username ya registrado");
-    }
-    else
-    {
-      Console.WriteLine("Usuario no encontrado, se creara otro");
-      userService.Save(user);
-      return new CustomResponse(HttpStatusCode.Accepted, "Usuario guardado");
-    }
-  }
+  //   if (foundUser != null)
+  //   {
+  //     Console.WriteLine("Usuario encontrado, no se puede encontrar otro");
+  //     return new CustomResponse(HttpStatusCode.Conflict, "Username ya registrado");
+  //   }
+  //   else
+  //   {
+  //     Console.WriteLine("Usuario no encontrado, se creara otro");
+  //     userService.Save(user);
+  //     return new CustomResponse(HttpStatusCode.Accepted, "Usuario guardado");
+  //   }
+  // }
 }

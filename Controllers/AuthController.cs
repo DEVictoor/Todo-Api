@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
   }
 
   [HttpPost]
+  [Route("login")]
   public dynamic login([FromBody] User user)
   {
     // var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());
@@ -65,5 +66,29 @@ public class AuthController : ControllerBase
       message = "exito",
       token = new JwtSecurityTokenHandler().WriteToken(token)
     };
+  }
+
+  [HttpPost]
+  [Route("register")]
+  public dynamic register([FromBody] RegisterModel model)
+  {
+    try
+    {
+      _user.Save(model);
+      return new
+      {
+        success = true,
+        message = "Registro con exito",
+      };
+    }
+    catch (System.Exception)
+    {
+      return new
+      {
+        success = false,
+        message = "No se pudo registrar el usuario",
+      };
+      // throw;
+    }
   }
 }
