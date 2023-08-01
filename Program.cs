@@ -5,6 +5,7 @@ using System.Text;
 
 using todoapi;
 using todoapi.Middlewares;
+using todoapi.services;
 using todoapi.Helpers;
 using todoapi.Controllers;
 using todoapi.models;
@@ -50,6 +51,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtController, JwtController>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 // builder.Services.AddScoped<IHashingAndSaltingPassword, HashingAndSaltingPassword>();
 // Database conexion with context
 builder.Services.AddNpgsql<Context>(builder.Configuration.GetConnectionString("postgresql"));

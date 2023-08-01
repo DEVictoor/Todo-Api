@@ -45,7 +45,6 @@ public class JwtController : IJwtController
         message = "Catch: " + e.Message,
       };
     }
-
   }
 }
 

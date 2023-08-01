@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using todoapi;
 using todoapi.models;
 
@@ -56,7 +55,7 @@ public class AuthController : ControllerBase
       jwt.Issuer,
       jwt.Audience,
       claims,
-      expires: DateTime.Now.AddMinutes(60),
+      expires: DateTime.Now.AddHours(12),
       signingCredentials: signIn
     );
 

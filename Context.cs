@@ -13,8 +13,6 @@ public class Context : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    // List<User> UserInit  = new List<User>();
-    // UserInit.Add(new User() {UserId = Guid.Parse("")})
     modelBuilder.Entity<User>(user =>
     {
       user.ToTable("User");
@@ -23,7 +21,7 @@ public class Context : DbContext
       user.HasIndex(p => p.username).IsUnique();
       user.Property(p => p.password).IsRequired();
       user.Property(p => p.passwordsalt).HasColumnType("varchar(200)");
-
+      user.HasMany(p => p.Tasks).WithOne(p => p.User).HasForeignKey(p => p.UserId).HasPrincipalKey(p => p.UserId);
     });
 
     // TODO: Model Task
@@ -31,6 +29,9 @@ public class Context : DbContext
     {
       task.ToTable("Task");
       task.HasKey(p => p.TaskId);
+      task.Property(p => p.description).IsRequired();
+      task.Property(p => p.IsDone).IsRequired();
+      task.Property(p => p.Created_at).HasDefaultValue(DateTime.UtcNow);
     });
   }
 }

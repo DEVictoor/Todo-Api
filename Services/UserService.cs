@@ -80,6 +80,7 @@ public interface IUserService
   IEnumerable<User> Get();
   Task Save(RegisterModel u);
   User? FindOneByUsername(string username);
+  User? FindOne(Guid id);
   Task Update(Guid id, User user);
   Task Delete(Guid id);
   bool ComparePassword(string pass, User user);

@@ -6,4 +6,6 @@ public class User
   public string username { get; set; }
   public string? passwordsalt { get; set; }
   public string password { get; set; }
+
+  public ICollection<TaskModel>? Tasks { get; }
 }
