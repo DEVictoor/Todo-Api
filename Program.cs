@@ -56,6 +56,20 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 // Database conexion with context
 builder.Services.AddNpgsql<Context>(builder.Configuration.GetConnectionString("postgresql"));
 
+var _policyName = "corsPolicy";
+
+builder.Services.AddCors(opt =>
+{
+  opt.AddPolicy(name: _policyName,
+  policy =>
+  {
+    policy.WithOrigins
+    ("*")
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+  });
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opts =>
 {
   opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -93,5 +107,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(_policyName);
 
 app.Run();
